@@ -70,7 +70,7 @@ stdenvNoCC.mkDerivation {
   builder = ./builder.sh;
   fetcher = ./nix-prefetch-git;  # This must be a string to ensure it's called with bash.
 
-  nativeBuildInputs = [ git ]
+  nativeBuildInputs = [ git openssh ]
     ++ lib.optionals fetchLFS [ git-lfs ];
 
   outputHashAlgo = if hash != "" then null else "sha256";
