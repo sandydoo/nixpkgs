@@ -83,7 +83,15 @@
     <itemizedlist spacing="compact">
       <listitem>
         <para>
-          Create the first release note entry in this section!
+          A new <literal>virtualisation.rosetta</literal> module was
+          added to allow running <literal>x86_64</literal> binaries
+          through
+          <link xlink:href="https://developer.apple.com/documentation/apple-silicon/about-the-rosetta-translation-environment">Rosetta</link>
+          inside virtualised NixOS guests on Apple silicon. This feature
+          works by default with the
+          <link xlink:href="https://docs.getutm.app/">UTM</link>
+          virtualisation
+          <link xlink:href="https://search.nixos.org/packages?channel=unstable&amp;show=utm&amp;from=0&amp;size=1&amp;sort=relevance&amp;type=packages&amp;query=utm">package</link>.
         </para>
       </listitem>
     </itemizedlist>
