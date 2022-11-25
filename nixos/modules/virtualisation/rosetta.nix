@@ -67,7 +67,7 @@ in
       preserveArgvZero = false;
 
       # The Rosetta runtime crashes when executed through the shell wrapper.
-      wrapInterpreterInShell = false;
+      wrapInterpreterInShell = true;
     };
   };
 }
