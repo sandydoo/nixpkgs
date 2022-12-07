@@ -25,12 +25,15 @@ args = parser.parse_args()
 def render_types(obj):
     if '_type' not in obj: return obj
 
+    def strip_quotes(text):
+        return text.strip('\"')
+
     _type = obj['_type']
     if _type == 'literalExpression' or _type == 'literalDocBook':
-        return obj['text']
+        return strip_quotes(obj['text'])
 
     if _type == 'derivation':
-        return obj['name']
+        return strip_quotes(obj['name'])
 
     raise Exception(f'Unexpected type `{_type}` in {json.dumps(obj)}')
 
