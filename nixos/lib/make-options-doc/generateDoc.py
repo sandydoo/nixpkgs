@@ -21,9 +21,10 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-# Pretty-print certain Nix types, like literal expressions.
-def render_types(obj):
-    if '_type' not in obj: return obj
+# Unpack literal expressions and other Nix types.
+def unpack_nix_types(obj):
+    if '_type' not in obj:
+        return obj
 
     _type = obj['_type']
     if _type == 'literalExpression' or _type == 'literalDocBook':
@@ -33,6 +34,14 @@ def render_types(obj):
         return obj['name']
 
     raise Exception(f'Unexpected type `{_type}` in {json.dumps(obj)}')
+
+class OptionsEncoder(json.JSONEncoder):
+    def encode(self, obj):
+        # Don't escape strings: they were escaped when serialized to JSON.
+        if isinstance(obj, str):
+            return obj
+
+        return super().encode(obj)
 
 def generate_commonmark(options):
     for (name, value) in options.items():
@@ -49,14 +58,14 @@ def generate_commonmark(options):
         if 'default' in value:
             print('*_Default_*')
             print('```')
-            print(json.dumps(value['default'], ensure_ascii=False, separators=(',', ':')))
+            print(json.dumps(value['default'], cls=OptionsEncoder, ensure_ascii=False, separators=(',', ':')))
             print('```')
         print()
         print()
         if 'example' in value:
             print('*_Example_*')
             print('```')
-            print(json.dumps(value['example'], ensure_ascii=False, separators=(',', ':')))
+            print(json.dumps(value['example'], cls=OptionsEncoder, ensure_ascii=False, separators=(',', ':')))
             print('```')
         print()
         print()
@@ -76,7 +85,7 @@ def generate_asciidoc(options):
             print('Default::')
             print('+')
             print('----')
-            print(json.dumps(value['default'], ensure_ascii=False, separators=(',', ':')))
+            print(json.dumps(value['default'], cls=OptionsEncoder, ensure_ascii=False, separators=(',', ':')))
             print('----')
             print()
         else:
@@ -89,7 +98,7 @@ def generate_asciidoc(options):
             print('Example::')
             print('+')
             print('----')
-            print(json.dumps(value['example'], ensure_ascii=False, separators=(',', ':')))
+            print(json.dumps(value['example'], cls=OptionsEncoder, ensure_ascii=False, separators=(',', ':')))
             print('----')
             print()
         else:
@@ -97,7 +106,7 @@ def generate_asciidoc(options):
         print()
 
 with open(args.nix_options_path) as nix_options_json:
-    options = json.load(nix_options_json, object_hook=render_types)
+    options = json.load(nix_options_json, object_hook=unpack_nix_types)
 
     if args.format == 'commonmark':
         generate_commonmark(options)
