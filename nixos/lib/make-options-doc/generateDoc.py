@@ -21,25 +21,21 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-# Unpack literal expressions and other Nix types.
-def unpack_nix_types(obj):
-    if '_type' not in obj:
-        return obj
-
-    _type = obj['_type']
-    if _type == 'literalExpression' or _type == 'literalDocBook':
-        return obj['text']
-
-    if _type == 'derivation':
-        return obj['name']
-
-    raise Exception(f'Unexpected type `{_type}` in {json.dumps(obj)}')
-
 class OptionsEncoder(json.JSONEncoder):
     def encode(self, obj):
-        # Don't escape strings: they were escaped when serialized to JSON.
-        if isinstance(obj, str):
-            return obj
+        # Unpack literal expressions and other Nix types.
+        # Don't escape the strings: they were escaped when initially serialized to JSON.
+        if isinstance(obj, dict):
+            _type = obj.get('_type')
+
+            if _type == 'literalExpression' or _type == 'literalDocBook':
+                return obj['text']
+
+            if _type == 'derivation':
+                return obj['name']
+
+            if _type is not None:
+                raise Exception(f'Unexpected type `{_type}` in {json.dumps(obj)}')
 
         return super().encode(obj)
 
@@ -106,7 +102,7 @@ def generate_asciidoc(options):
         print()
 
 with open(args.nix_options_path) as nix_options_json:
-    options = json.load(nix_options_json, object_hook=unpack_nix_types)
+    options = json.load(nix_options_json)
 
     if args.format == 'commonmark':
         generate_commonmark(options)
