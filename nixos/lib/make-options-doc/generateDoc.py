@@ -54,14 +54,14 @@ def generate_commonmark(options):
         if 'default' in value:
             print('*_Default_*')
             print('```')
-            print(json.dumps(value['default'], cls=OptionsEncoder, ensure_ascii=False, separators=(',', ':')))
+            print(value['default'])
             print('```')
         print()
         print()
         if 'example' in value:
             print('*_Example_*')
             print('```')
-            print(json.dumps(value['example'], cls=OptionsEncoder, ensure_ascii=False, separators=(',', ':')))
+            print(value['example'])
             print('```')
         print()
         print()
