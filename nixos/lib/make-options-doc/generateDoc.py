@@ -28,7 +28,7 @@ class OptionsEncoder(json.JSONEncoder):
         if isinstance(obj, dict):
             _type = obj.get('_type')
             if _type is not None:
-                if _type == 'literalExpression' or _type == 'literalDocBook':
+                if _type in  ['literalExpression', 'mdDoc']:
                     return obj['text']
 
                 if _type == 'derivation':
