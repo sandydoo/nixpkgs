@@ -59,9 +59,19 @@ let
   datadog_checks_base = buildIntegration {
     pname = "checks-base";
     sourceRoot = "datadog_checks_base";
+
+    postPatch = ''
+      substituteInPlace setup.py \
+        --replace "from setuptools import setup" "from setuptools import find_packages, setup" \
+        --replace "packages=['datadog_checks']" "packages=find_packages()"
+    '';
+
     propagatedBuildInputs = with python.pkgs; [
+      binary
       cachetools
       cryptography
+      ddtrace
+      hatchling
       immutables
       jellyfish
       prometheus-client
@@ -76,6 +86,8 @@ let
       uptime
       wrapt
     ];
+
+    pythonImportsCheck = [ "datadog_checks.base" "datadog_checks.checks" ];
   };
 
   # Default integrations that should be built:
