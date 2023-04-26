@@ -6916,6 +6916,8 @@ self: super: with self; {
 
   openstacksdk = callPackage ../development/python-modules/openstacksdk { };
 
+  opentelemetry-api = callPackage ../development/python-modules/opentelemetry-api { };
+
   opentimestamps = callPackage ../development/python-modules/opentimestamps { };
 
   openturns = toPythonModule (pkgs.openturns.override {
