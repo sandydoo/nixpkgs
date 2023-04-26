@@ -1,0 +1,15 @@
+diff --git a/setup.py b/setup.py
+index 027c80bed..2c49a2479 100644
+--- a/setup.py
++++ b/setup.py
+@@ -307,10 +307,6 @@ setup(
+     name="ddtrace",
+     description="Datadog APM client library",
+     url="https://github.com/DataDog/dd-trace-py",
+-    package_urls={
+-        "Changelog": "https://ddtrace.readthedocs.io/en/stable/release_notes.html",
+-        "Documentation": "https://ddtrace.readthedocs.io/en/stable/",
+-    },
+     project_urls={
+         "Bug Tracker": "https://github.com/DataDog/dd-trace-py/issues",
+         "Source Code": "https://github.com/DataDog/dd-trace-py/",

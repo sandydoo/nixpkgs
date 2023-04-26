@@ -2352,6 +2352,8 @@ self: super: with self; {
 
   ddt = callPackage ../development/python-modules/ddt { };
 
+  ddtrace = callPackage ../development/python-modules/ddtrace { };
+
   deal = callPackage ../development/python-modules/deal { };
 
   deal-solver = callPackage ../development/python-modules/deal-solver { };
