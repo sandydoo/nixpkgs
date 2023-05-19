@@ -382,8 +382,11 @@ in
         default = [];
         example = literalExpression "with pkgs.postgresql_11.pkgs; [ postgis pg_repack ]";
         description = lib.mdDoc ''
-          List of PostgreSQL plugins. PostgreSQL version for each plugin should
-          match version for `services.postgresql.package` value.
+          List of PostgreSQL plugins. The PostgreSQL version for each plugin should
+          match the version of `services.postgresql.package`.
+
+          The available plugins are:
+          ${lib.concatLines (builtins.map (x: "- " + x) (builtins.attrNames pkgs.postgresql.pkgs))}
         '';
       };
 
