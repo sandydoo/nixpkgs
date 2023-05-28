@@ -2,9 +2,8 @@
 , lib
 , rustPlatform
 , fetchFromGitHub
-, Security
 , DiskArbitration
-, Foundation
+, Security
 , nixosTests
 , nix-update-script
 }:
@@ -40,9 +39,8 @@ rustPlatform.buildRustPackage {
   buildNoDefaultFeatures = true;
 
   buildInputs = lib.optionals stdenv.isDarwin [
-    Security
     DiskArbitration
-    Foundation
+    Security
   ];
 
   passthru = {
