@@ -259,12 +259,6 @@ in {
         serviceConfig.PermissionsStartOnly = true;
       };
 
-      dd-jmxfetch = lib.mkIf (lib.hasAttr "jmx" cfg.checks) (makeService {
-        description = "Datadog JMX Fetcher";
-        path = [ datadogPkg pkgs.python pkgs.sysstat pkgs.procps pkgs.jdk ];
-        serviceConfig.ExecStart = "${datadogPkg}/bin/dd-jmxfetch";
-      });
-
       datadog-process-agent = lib.mkIf cfg.enableLiveProcessCollection (makeService {
         description = "Datadog Live Process Agent";
         path = [ ];
