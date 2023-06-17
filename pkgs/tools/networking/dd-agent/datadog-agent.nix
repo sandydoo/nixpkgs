@@ -7,6 +7,7 @@
 , pythonPackages
 , pkg-config
 , systemd
+, rsync
 , hostname
 , withSystemd ? lib.meta.availableOn stdenv.hostPlatform systemd
 , extraTags ? [ ]
@@ -91,9 +92,20 @@ in buildGo118Module rec {
 
   # Install the config files and python modules from the "dist" dir
   # into standard paths.
+  #
+  # Unused and incompatible configs are removed to prevent errors when loading
+  # checks:
+  # - "apm" (trace-agent) and "process" (process-agent) are separate agents.
+  # - "winproc" is Windows-specific.
   postInstall = ''
     mkdir -p $out/${python.sitePackages} $out/share/datadog-agent
-    cp -R $src/cmd/agent/dist/conf.d $out/share/datadog-agent
+
+    ${rsync}/bin/rsync -a $src/cmd/agent/dist/conf.d \
+      --exclude apm.yaml.default \
+      --exclude process_agent.yaml.default \
+      --exclude winproc.d \
+      $out/share/datadog-agent/
+
     cp -R $src/cmd/agent/dist/{checks,utils,config.py} $out/${python.sitePackages}
 
     cp -R $src/pkg/status/templates $out/share/datadog-agent
