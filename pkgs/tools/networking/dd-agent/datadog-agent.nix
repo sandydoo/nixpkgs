@@ -49,20 +49,37 @@ in buildGo118Module rec {
     "cmd/cluster-agent"
     "cmd/dogstatsd"
     "cmd/py-launcher"
-    "cmd/trace-agent"
   ];
-
 
   nativeBuildInputs = [ pkg-config makeWrapper ];
   buildInputs = [rtloader] ++ lib.optionals withSystemd [ systemd ];
   PKG_CONFIG_PATH = "${python}/lib/pkgconfig";
 
+  # List of available tags:
+  # https://github.com/DataDog/datadog-agent/blob/e65b3752a30ece419f4985c1b452a95f52bd646b/tasks/build_tags.py#L17
   tags = [
+    "apm"
+    "consul"
+    "containerd"
+    "cri"
+    "docker"
     "ec2"
-    "python"
+    "etcd"
+    "gce"
+    "jetson"
+    "jmx"
+    "kubeapiserver"
+    "kubelet"
+    "netcgo"
+    "orchestrator"
+    "otlp"
+    "podman"
     "process"
-    "log"
+    "python"
     "secrets"
+    "trivy"
+    "zk"
+    "zlib"
   ]
   ++ lib.optionals withSystemd [ "systemd" ]
   ++ extraTags;
