@@ -22,6 +22,14 @@ with lib;
         '';
       };
 
+      configFile = mkOption {
+        type = types.path;
+        default = "/etc/clickhouse-server/config.xml";
+        description = lib.mdDoc ''
+          Specify a path to the ClickHouse server configuration file.
+        '';
+      };
+
     };
 
   };
@@ -55,7 +63,7 @@ with lib;
         AmbientCapabilities = "CAP_SYS_NICE";
         StateDirectory = "clickhouse";
         LogsDirectory = "clickhouse";
-        ExecStart = "${cfg.package}/bin/clickhouse-server --config-file=/etc/clickhouse-server/config.xml";
+        ExecStart = "${cfg.package}/bin/clickhouse-server --config-file=${cfg.configFile}";
         TimeoutStartSec = "infinity";
       };
 
