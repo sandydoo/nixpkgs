@@ -141,10 +141,20 @@ const performParallel = tasks => {
 	return Promise.all(workers)
 }
 
+const filterDuplicates = (entries) => {
+  const seen = new Set()
+	return entries.filter(([_, value]) => {
+		const key = value.resolved
+		if (seen.has(key)) return false
+		seen.add(key)
+		return true
+	})
+}
+
 const prefetchYarnDeps = async (lockContents, verbose) => {
 	const lockData = lockfile.parse(lockContents)
 	await performParallel(
-		Object.entries(lockData.object)
+		filterDuplicates(Object.entries(lockData.object))
 		.map(([key, value]) => () => downloadPkg({ key, ...value }, verbose))
 	)
 	await fs.promises.writeFile('yarn.lock', lockContents)
