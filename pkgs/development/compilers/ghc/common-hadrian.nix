@@ -189,9 +189,7 @@
       ++
         lib.optionals
           (
-            stdenv.hostPlatform.isLinux
-            && stdenv.hostPlatform.isAarch64
-            && lib.versionAtLeast version "9.6"
+            lib.versionAtLeast version "9.6"
             && lib.versionOlder version "9.6.5"
           )
           [
@@ -205,7 +203,7 @@
             })
           ]
       ++
-        lib.optional
+        lib.optionals
           (
             # 2025-01-16: unix >= 2.8.6.0 is unaffected which is shipped by GHC 9.12.1 and 9.8.4
             lib.versionOlder version "9.11"
