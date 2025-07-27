@@ -114,7 +114,7 @@ stdenv.mkDerivation (
         ln -s $out/lib/libunwind.so $out/lib/libgcc_s.so.1
       ''
       + lib.optionalString (doFakeLibgcc && stdenv.hostPlatform.isWindows) ''
-        ln -s $out/lib/libunwind.dll.a $out/lib/libgcc_s.dll.a
+        ln -s $out/lib/libunwind.a $out/lib/libgcc_s.dll.a
       '';
 
     meta = llvm_meta // {
