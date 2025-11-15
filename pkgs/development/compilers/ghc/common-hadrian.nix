@@ -277,6 +277,8 @@
         ./ghc-define-undefined-elf-st-visibility.patch
       ]
 
+      ++ lib.optionals (lib.versionAtLeast version "9.10") [ ./rtld.patch ]
+
       ++ (import ./common-llvm-patches.nix { inherit lib version fetchpatch; });
 
     stdenv = stdenvNoCC;

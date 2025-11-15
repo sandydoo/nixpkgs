@@ -1,0 +1,25 @@
+From 07be06e588607552158e7fb17965d77dd1242aee Mon Sep 17 00:00:00 2001
+From: Sander <hey@sandydoo.me>
+Date: Sat, 15 Nov 2025 15:51:27 +0100
+Subject: [PATCH] patch RTLD_LOCAL
+
+---
+ rts/linker/LoadNativeObjPosix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/rts/linker/LoadNativeObjPosix.c b/rts/linker/LoadNativeObjPosix.c
+index fbdecc512b..b31fb78572 100644
+--- a/rts/linker/LoadNativeObjPosix.c
++++ b/rts/linker/LoadNativeObjPosix.c
+@@ -167,7 +167,7 @@ try_again:
+ #endif
+ 
+    const int dlopen_mode = load_now ? RTLD_NOW : RTLD_LAZY;
+-   hdl = dlopen(path, dlopen_mode|RTLD_LOCAL); /* see Note [RTLD_LOCAL] */
++   hdl = dlopen(path, dlopen_mode|RTLD_GLOBAL); /* see Note [RTLD_LOCAL] */
+    nc->dlopen_handle = hdl;
+    nc->status = OBJECT_READY;
+ 
+-- 
+2.51.0
+
